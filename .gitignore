@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+
+# Logs / output
+logs/
+*.log
+
+# CSV / local data
+prices.csv
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+config.json

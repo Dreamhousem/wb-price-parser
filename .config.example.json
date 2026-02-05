@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "currency": "byn",
+    "dest": "-59246",
+    "spp": "30",
+    "sleep_seconds": 1,
+    "timeout_seconds": 10,
+    "price_divider": 100
+  },
+  "items": [
+    {
+      "id": 333444333,
+      "name": "Название товара в CSV файле",
+      "target_price": 55.0 //цена, которую хочешь поймать
+    }
+  ]
+}
