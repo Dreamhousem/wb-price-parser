@@ -19,6 +19,7 @@ prices.csv
 .DS_Store
 .vscode/
 .idea/
+*.sqlite
 
 # Env / secrets
 .env
