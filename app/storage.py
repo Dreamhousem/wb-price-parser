@@ -1,28 +1,59 @@
-import csv
+import json
 import os
-from datetime import datetime
+import logging
 
-CSV_FILE = 'data/prices.csv' # Обрати внимание: теперь в папке data
+SUBS_FILE = 'data/subscriptions.json'
+STATE_FILE = 'data/state.json'
 
-def init_csv():
-    """Создает папку data и файл CSV, если их нет"""
+logger = logging.getLogger(__name__)
+
+def _load_json(filepath, default):
+    if not os.path.exists(filepath):
+        return default
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"Ошибка чтения {filepath}: {e}")
+        return default
+
+def _save_json(filepath, data):
     os.makedirs('data', exist_ok=True)
-    
-    if not os.path.exists(CSV_FILE):
-        with open(CSV_FILE, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f, delimiter=';')
-            writer.writerow(['timestamp', 'id', 'name', 'product_price', 'logistics', 'return', 'total_price'])
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"Ошибка записи {filepath}: {e}")
 
-def save_price(item_id, item_name, price_dict):
-    """Дописывает строку в CSV"""
-    with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f, delimiter=';')
-        writer.writerow([
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            item_id,
-            item_name,
-            f"{price_dict['product']:.2f}".replace('.', ','),
-            f"{price_dict['logistics']:.2f}".replace('.', ','),
-            f"{price_dict['return']:.2f}".replace('.', ','),
-            f"{price_dict['total']:.2f}".replace('.', ',')
-        ])
+# --- Публичные методы ---
+
+def get_subscriptions():
+    """Возвращает список товаров"""
+    return _load_json(SUBS_FILE, [])
+
+def add_subscription(item):
+    """item = {'id': 123, 'target': 500, 'name': '...'}"""
+    subs = get_subscriptions()
+    # Проверка на дубликаты
+    for sub in subs:
+        if sub['id'] == item['id']:
+            sub['target'] = item['target'] # Обновляем цель
+            _save_json(SUBS_FILE, subs)
+            return
+    subs.append(item)
+    _save_json(SUBS_FILE, subs)
+
+def remove_subscription(product_id):
+    subs = get_subscriptions()
+    subs = [s for s in subs if str(s['id']) != str(product_id)]
+    _save_json(SUBS_FILE, subs)
+    # Также нужно чистить стейт, но это опционально для MVP
+
+def get_state():
+    return _load_json(STATE_FILE, {})
+
+def update_state(product_id, state_data):
+    """Обновляет in_alert и цены для конкретного товара"""
+    current_state = get_state()
+    current_state[str(product_id)] = state_data
+    _save_json(STATE_FILE, current_state)

@@ -1,7 +1,10 @@
-import requests
+import aiohttp
+import logging
 
-def get_product_data(article, settings):
-    """Делает запрос к API WB и возвращает JSON или None"""
+logger = logging.getLogger(__name__)
+
+async def get_product_data(article, settings):
+    """Асинхронный запрос к API WB"""
     url = (
         f"https://card.wb.ru/cards/v4/detail?"
         f"appType=1&"
@@ -17,12 +20,10 @@ def get_product_data(article, settings):
     }
 
     try:
-        response = requests.get(url, headers=headers, timeout=settings['timeout_seconds'])
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"[NETWORK] Ошибка запроса для {article}: {e}")
-        return None
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, timeout=settings['timeout_seconds']) as response:
+                response.raise_for_status()
+                return await response.json()
     except Exception as e:
-        print(f"[UNKNOWN] Ошибка с {article}: {e}")
+        logger.error(f"Ошибка API WB для {article}: {e}")
         return None
