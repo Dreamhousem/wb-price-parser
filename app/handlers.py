@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from aiogram import Router
 from aiogram.filters import Command, CommandObject
 from aiogram.types import Message
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from app.wb_api import get_product_data
 from app.parser import parse_card_data
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 router = Router()
 BOT_CONFIG = None
+BOT_SCHEDULER: AsyncIOScheduler | None = None
 
 
 def _now_iso() -> str:
@@ -34,9 +36,10 @@ def _parse_iso(ts: str):
         return None
 
 
-def register_handlers(dp, config):
+def register_handlers(dp, config, scheduler: AsyncIOScheduler | None = None):
     global BOT_CONFIG
     BOT_CONFIG = config
+    BOT_SCHEDULER = scheduler
     dp.include_router(router)
     logger.info("Handlers зарегистрированы.")
 

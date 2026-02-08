@@ -8,19 +8,33 @@ __pycache__/
 venv/
 .venv/
 
-# Logs / output
-logs/
-*.log
-
-# CSV / local data
-prices.csv
+# DB
+*.sqlite
+*.db
 
 # OS / editor
 .DS_Store
 .vscode/
 .idea/
-*.sqlite
 
 # Env / secrets
 .env
 config.json
+
+# Secrets
+.env
+config.json
+
+# Runtime logs/data
+logs/
+data/prices*.csv
+data/state.json
+data/subscriptions.json
+*.sqlite
+!data/.gitkeep
+
+# Logs
+logs/
+*.log
+
+.gitignore
