@@ -2,11 +2,16 @@
   "246499227": {
     "in_alert": true,
     "last_price": 53.38,
-    "last_check_time": "2026-02-08T16:42:55"
+    "last_check_time": "2026-02-08T17:01:22"
   },
   "322113946": {
     "in_alert": false,
     "last_price": 13.18,
-    "last_check_time": "2026-02-08T16:42:55"
+    "last_check_time": "2026-02-08T17:01:22"
+  },
+  "333165372": {
+    "in_alert": false,
+    "last_price": 65.4,
+    "last_check_time": "2026-02-08T17:02:01"
   }
 }

@@ -3,7 +3,7 @@ import logging
 import os
 from aiogram import Bot, Dispatcher
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
+from app.storage import init_csv
 from app.config import load_config
 from app.handlers import register_handlers
 from app.checker import check_prices_job
