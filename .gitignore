@@ -24,3 +24,5 @@ prices.csv
 # Env / secrets
 .env
 config.json
+
+old_files/
