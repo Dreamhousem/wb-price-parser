@@ -1,4 +1,4 @@
-aiogram>=3.0
-apscheduler
-curl_cffi
-python-dotenv
+aiogram==3.13.1
+apscheduler==3.10.4
+curl-cffi==0.7.3
+python-dotenv==1.0.1

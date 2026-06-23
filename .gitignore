@@ -8,9 +8,15 @@ __pycache__/
 venv/
 .venv/
 
+# Env / secrets
+.env
+config.json
+
+
 # Logs / output
 logs/
 *.log
+!logs/.gitkeep
 
 # CSV / local data
 prices.csv
@@ -21,8 +27,6 @@ prices.csv
 .idea/
 *.sqlite
 
-# Env / secrets
-.env
-config.json
-
-old_files/
+# runtime data
+data/*
+!data/.gitkeep
